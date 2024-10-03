@@ -1,8 +1,10 @@
 package edu.uptc.swii.arbollenguajes.controllers;
 
 import edu.uptc.swii.arbollenguajes.domain.Manager;
+import edu.uptc.swii.arbollenguajes.models.Production;
 import edu.uptc.swii.arbollenguajes.models.Symbol;
 import edu.uptc.swii.arbollenguajes.view.MessageDialog;
+import edu.uptc.swii.arbollenguajes.view.ElementPanel;
 import edu.uptc.swii.arbollenguajes.view.WordInputDialog;
 import javafx.application.Platform;
 import javafx.fxml.FXML;
@@ -11,6 +13,11 @@ import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.VBox;
+import javafx.scene.paint.Color;
+import javafx.scene.text.Font;
+import javafx.scene.text.FontWeight;
+import javafx.scene.text.Text;
+import javafx.scene.text.TextFlow;
 import javafx.stage.Stage;
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Component;
@@ -50,6 +57,9 @@ public class Controller {
     @FXML
     private Label tileLabel;
 
+    @FXML
+    private TextFlow particularTreeText;
+
     private String word;
 
     public Controller(Manager manager) {
@@ -78,6 +88,7 @@ public class Controller {
 
     @FXML
     protected void testGrammar(){
+        //TODO: verificar que el simbolo de comienzo exista en los no terminales
         manager.addStartSymbol(startSymbolText.getText());
         word = new WordInputDialog((Stage) terminalText.getScene().getWindow()).showAndGetWord();
         boolean isValid = manager.checkGrammar();
@@ -90,7 +101,12 @@ public class Controller {
     protected void addNonTerminal(){
         boolean isValid = manager.addNonTerminal(nonTerminalText.getText());
         if (isValid) {
-            //TODO: añadir el simbolo
+            ElementPanel elementPanel = new ElementPanel(nonTerminalText.getText(), "Simbolo");
+            elementPanel.setCallback(() -> {
+                //TODO: eliminar el simbolo del manager
+                nonTerminalSymbolsPanel.getChildren().remove(elementPanel);
+            });
+            nonTerminalSymbolsPanel.getChildren().add(elementPanel);
         }
     }
 
@@ -98,17 +114,54 @@ public class Controller {
     protected void addTerminal(){
         boolean isValid = manager.addTerminal(terminalText.getText());
         if (isValid) {
-            //TODO: añadir el simbolo
+            ElementPanel elementPanel = new ElementPanel(terminalText.getText(), "Simbolo");
+            elementPanel.setCallback(() -> {
+                //TODO: eliminar el simbolo del manager
+                terminalSymbolsPanel.getChildren().remove(elementPanel);
+            });
+            terminalSymbolsPanel.getChildren().add(elementPanel);
         }
     }
 
     @FXML
     protected void addProduction() {
-        //TODO: verificar que el texto del simbolo no este vacio
+        Production production = new Production(productionProdText.getText(), productionProductText.getText());
+        boolean isValid = manager.addProduction(production);
+        if (isValid) {
+            //TODO: mostrar bien el producto
+            String value = "%s ➡ %s".formatted(production.getProduction(), production.getProduct());
+            ElementPanel elementPanel = new ElementPanel(value, "Produccion");
+            elementPanel.setCallback(() -> {
+                //TODO: eliminar la produccion del manager
+                productionsPanel.getChildren().remove(elementPanel);
+            });
+            productionsPanel.getChildren().add(elementPanel);
+        }
     }
 
     public void showParticularTreeNode(boolean isLast, boolean isValid, Symbol... values) {
-        //TODO: mostrar node del arbol
+        for (Symbol value : values) {
+            Text text1 = new Text(value.getValue());
+            text1.setFill(value.isTerminal()? Color.BLUE : Color.ORANGE);
+            text1.setFont(Font.font("Arial", FontWeight.BOLD, 25));
+            particularTreeText.getChildren().add(text1);
+        }
+        if (isValid && isLast) {
+            Text last = new Text("  ✅");
+            last.setFill(Color.GREEN);
+            last.setFont(Font.font("Arial", FontWeight.BOLD, 25));
+            particularTreeText.getChildren().add(last);
+        } else if (!isValid) {
+            Text invalid = new Text("  ❌");
+            invalid.setFill(Color.RED);
+            invalid.setFont(Font.font("Arial", FontWeight.BOLD, 25));
+            particularTreeText.getChildren().add(invalid);
+        } else {
+            Text next = new Text("  ➡  ");
+            next.setFont(Font.font("Arial", FontWeight.BOLD, 25));
+            next.setFill(Color.GRAY);
+            particularTreeText.getChildren().add(next);
+        }
     }
 
     public void invalidWord(){

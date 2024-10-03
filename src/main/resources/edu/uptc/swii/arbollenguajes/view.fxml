@@ -9,6 +9,7 @@
 <?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
+<?import javafx.scene.text.TextFlow?>
 
 <HBox minHeight="500.0" minWidth="800.0" xmlns="http://javafx.com/javafx/23" xmlns:fx="http://javafx.com/fxml/1" fx:controller="edu.uptc.swii.arbollenguajes.controllers.Controller">
    <children>
@@ -37,9 +38,9 @@
                               </Button>
                            </children>
                         </HBox>
-                        <ScrollPane fitToHeight="true" fitToWidth="true" maxHeight="70.0" maxWidth="210.0" minHeight="70.0" prefHeight="70.0">
+                        <ScrollPane fitToHeight="true" fitToWidth="true" maxHeight="100.0" maxWidth="210.0" minHeight="100.0" prefHeight="100.0">
                            <content>
-                              <VBox fx:id="nonTerminalSymbolsPanel" prefHeight="200.0" prefWidth="100.0" style="-fx-background-color: gray;" />
+                              <VBox fx:id="nonTerminalSymbolsPanel" alignment="TOP_CENTER" spacing="5.0" style="-fx-background-color: gray;" />
                            </content>
                         </ScrollPane>
                         <Label text="Simbolos terminales:" textFill="WHITE" wrapText="true" />
@@ -53,9 +54,9 @@
                               </Button>
                            </children>
                         </HBox>
-                        <ScrollPane fitToHeight="true" fitToWidth="true" maxHeight="70.0" maxWidth="210.0" minHeight="70.0" prefHeight="70.0">
+                        <ScrollPane fitToHeight="true" fitToWidth="true" maxHeight="100.0" maxWidth="210.0" minHeight="100.0" prefHeight="100.0">
                            <content>
-                              <VBox fx:id="terminalSymbolsPanel" prefHeight="200.0" prefWidth="100.0" style="-fx-background-color: gray;" />
+                              <VBox fx:id="terminalSymbolsPanel" alignment="TOP_CENTER" spacing="5.0" style="-fx-background-color: gray;" />
                            </content>
                         </ScrollPane>
                         <Label text="Producciones:" textFill="WHITE" wrapText="true" />
@@ -75,9 +76,9 @@
                               </Button>
                            </children>
                         </HBox>
-                        <ScrollPane fitToHeight="true" fitToWidth="true" maxHeight="70.0" maxWidth="210.0" minHeight="70.0" prefHeight="70.0">
+                        <ScrollPane fitToHeight="true" fitToWidth="true" maxHeight="100.0" maxWidth="210.0" minHeight="100.0" prefHeight="100.0">
                            <content>
-                              <VBox fx:id="productionsPanel" prefHeight="200.0" prefWidth="100.0" style="-fx-background-color: gray;" />
+                              <VBox fx:id="productionsPanel" alignment="TOP_CENTER" spacing="5.0" style="-fx-background-color: gray;" />
                            </content>
                         </ScrollPane>
                         <Label text="Simbolo de comienzo:" textFill="WHITE" wrapText="true" />
@@ -88,7 +89,7 @@
             </ScrollPane>
          </children>
       </VBox>
-      <VBox spacing="15.0" HBox.hgrow="ALWAYS">
+      <VBox spacing="15.0" style="-fx-background-color: white;" HBox.hgrow="ALWAYS">
          <children>
             <Label fx:id="tileLabel" alignment="CENTER" maxWidth="1.7976931348623157E308" text="Ingresa la gramatica y pruebala con una palabra" textAlignment="CENTER">
                <padding>
@@ -98,24 +99,22 @@
                   <Font name="Arial Black" size="15.0" />
                </font>
             </Label>
-            <VBox prefHeight="100.0" prefWidth="100.0">
-               <children>
-                  <Label text="Arbol de derivacion particular:">
-                     <font>
-                        <Font name="System Bold" size="14.0" />
-                     </font>
-                  </Label>
-               </children>
-            </VBox>
-            <VBox prefHeight="200.0" prefWidth="100.0" VBox.vgrow="ALWAYS">
-               <children>
-                  <Label text="Arbol de derivacion general:">
-                     <font>
-                        <Font name="System Bold" size="14.0" />
-                     </font>
-                  </Label>
-               </children>
-            </VBox>
+            <Label text="Arbol de derivacion particular:">
+               <font>
+                  <Font name="System Bold" size="14.0" />
+               </font>
+            </Label>
+            <ScrollPane fitToHeight="true" fitToWidth="true" prefHeight="55.0" prefWidth="200.0" style="-fx-background-color: white;">
+               <content>
+                  <TextFlow fx:id="particularTreeText" minHeight="-Infinity" minWidth="-Infinity" style="-fx-background-color: white;" textAlignment="CENTER" />
+               </content>
+            </ScrollPane>
+            <Label text="Arbol de derivacion general:">
+               <font>
+                  <Font name="System Bold" size="14.0" />
+               </font>
+            </Label>
+            <ScrollPane fitToHeight="true" fitToWidth="true" prefHeight="200.0" prefWidth="200.0" VBox.vgrow="ALWAYS" />
          </children>
          <padding>
             <Insets bottom="5.0" left="10.0" right="10.0" top="5.0" />
