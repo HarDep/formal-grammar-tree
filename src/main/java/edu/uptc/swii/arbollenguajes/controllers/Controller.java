@@ -93,6 +93,7 @@ public class Controller {
         word = new WordInputDialog((Stage) terminalText.getScene().getWindow()).showAndGetWord();
         boolean isValid = manager.checkGrammar();
         if (!isValid) return;
+        //TODO: limpiar paneles de arboles
         manager.generateParticularTree(word);
         manager.generateGeneralTree();
     }
