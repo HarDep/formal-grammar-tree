@@ -38,11 +38,10 @@ public class GrammarManager implements Manager {
         if (nonTerminals.add(value)) {
             return true;
         } else {
-            controller.showMessage("El símbolo no pudo ser añadido ya está en los no terminales", "Error");
+            controller.showMessage("El símbolo ya ha sido añadido", "Advertencia");
             return false;
         }
     }
-
 
     @Override
     public boolean addTerminal(String value) {
@@ -53,11 +52,10 @@ public class GrammarManager implements Manager {
         if (terminals.add(value)) {
             return true;
         } else {
-            controller.showMessage("El símbolo no pudo ser añadido ya está en los terminales", "Error");
+            controller.showMessage("El símbolo ya ha sido añadido", "Advertencia");
             return false;
         }
     }
-
 
     @Override
     public boolean addProduction(Production production) {
@@ -68,19 +66,20 @@ public class GrammarManager implements Manager {
             controller.showMessage("El símbolo de producción no es un no terminal válido", "Error");
             return false;
         }
-        for (int i = 0; i < separatedProducts.length; i++) {
-            String symbol = separatedProducts[i].replace("SOME_UNIQUE_CHAR", ",");
+        for (String separatedProduct : separatedProducts) {
+            String symbol = separatedProduct.replace("SOME_UNIQUE_CHAR", ",");
             if (!terminals.contains(symbol) && !nonTerminals.contains(symbol)) {
                 controller.showMessage("El símbolo " + symbol + " no es válido", "Error");
                 return false;
             }
         }
-        productions.add(production);
+        boolean isAdded =productions.add(production);
+        if (!isAdded) {
+            controller.showMessage("La producción ya ha sido anadida", "Advertencia");
+            return false;
+        }
         return true;
     }
-
-
-
 
     @Override
     public void addStartSymbol(String value) {
@@ -90,6 +89,7 @@ public class GrammarManager implements Manager {
             controller.showMessage("El símbolo de inicio no es un no terminal válido", "Error");
         }
     }
+
     @Override
     public boolean checkGrammar() {
         for (String terminal : terminals) {
@@ -139,9 +139,6 @@ public class GrammarManager implements Manager {
 
         return true;
     }
-
-
-
 
     @Override
     public void generateParticularTree(String word) {

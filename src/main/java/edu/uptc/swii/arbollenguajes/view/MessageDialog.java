@@ -4,6 +4,7 @@ import javafx.geometry.Pos;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
+import javafx.scene.layout.Region;
 import javafx.scene.layout.VBox;
 import javafx.scene.text.Font;
 import javafx.scene.text.FontWeight;
@@ -34,6 +35,8 @@ public class MessageDialog {
         titleLabel.setAlignment(Pos.CENTER);
         titleLabel.setFont(Font.font("Arial", FontWeight.BOLD ,20));
         Label messageLabel = new Label(message);
+        messageLabel.setWrapText(true);
+        messageLabel.setMinHeight(Region.USE_COMPUTED_SIZE);
         messageLabel.setTextAlignment(TextAlignment.JUSTIFY);
         Button closeButton = new CloseButton(e -> stage.close());
         vbox.getChildren().addAll(titleLabel, messageLabel, closeButton);

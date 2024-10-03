@@ -38,7 +38,7 @@
                               </Button>
                            </children>
                         </HBox>
-                        <ScrollPane fitToHeight="true" fitToWidth="true" maxHeight="100.0" maxWidth="210.0" minHeight="100.0" prefHeight="100.0">
+                        <ScrollPane fitToHeight="true" fitToWidth="true" maxHeight="100.0" maxWidth="210.0" minHeight="100.0" prefHeight="100.0" style="-fx-background-color: gray;">
                            <content>
                               <VBox fx:id="nonTerminalSymbolsPanel" alignment="TOP_CENTER" spacing="5.0" style="-fx-background-color: gray;" />
                            </content>
@@ -54,7 +54,7 @@
                               </Button>
                            </children>
                         </HBox>
-                        <ScrollPane fitToHeight="true" fitToWidth="true" maxHeight="100.0" maxWidth="210.0" minHeight="100.0" prefHeight="100.0">
+                        <ScrollPane fitToHeight="true" fitToWidth="true" maxHeight="100.0" maxWidth="210.0" minHeight="100.0" prefHeight="100.0" style="-fx-background-color: gray;">
                            <content>
                               <VBox fx:id="terminalSymbolsPanel" alignment="TOP_CENTER" spacing="5.0" style="-fx-background-color: gray;" />
                            </content>
@@ -76,7 +76,7 @@
                               </Button>
                            </children>
                         </HBox>
-                        <ScrollPane fitToHeight="true" fitToWidth="true" maxHeight="100.0" maxWidth="210.0" minHeight="100.0" prefHeight="100.0">
+                        <ScrollPane fitToHeight="true" fitToWidth="true" maxHeight="100.0" maxWidth="210.0" minHeight="100.0" prefHeight="100.0" style="-fx-background-color: gray;">
                            <content>
                               <VBox fx:id="productionsPanel" alignment="TOP_CENTER" spacing="5.0" style="-fx-background-color: gray;" />
                            </content>
