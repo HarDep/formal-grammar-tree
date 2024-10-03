@@ -63,23 +63,22 @@ public class GrammarManager implements Manager {
     public boolean addProduction(Production production) {
         String product = production.getProduct().replace("/,", "SOME_UNIQUE_CHAR");
         String[] separatedProducts = product.split(",");
+
         if (!nonTerminals.contains(production.getProduction())) {
             controller.showMessage("El símbolo de producción no es un no terminal válido", "Error");
             return false;
         }
-
-        for (String symbol : separatedProducts) {
+        for (int i = 0; i < separatedProducts.length; i++) {
+            String symbol = separatedProducts[i].replace("SOME_UNIQUE_CHAR", ",");
             if (!terminals.contains(symbol) && !nonTerminals.contains(symbol)) {
                 controller.showMessage("El símbolo " + symbol + " no es válido", "Error");
                 return false;
             }
         }
-
-        production.setProduct(production.getProduct().replace("SOME_UNIQUE_CHAR", ","));
-
         productions.add(production);
         return true;
     }
+
 
 
 
@@ -91,38 +90,56 @@ public class GrammarManager implements Manager {
             controller.showMessage("El símbolo de inicio no es un no terminal válido", "Error");
         }
     }
-
-
     @Override
     public boolean checkGrammar() {
-        Set<String> usedTerminals = new HashSet<>();
-        Set<String> usedNonTerminals = new HashSet<>();
-
-        for (Production production : productions) {
-
-            usedNonTerminals.add(production.getProduction());
-
-            for (String symbol : production.getProduct().split(",")) {
-                if (terminals.contains(symbol)) {
-                    usedTerminals.add(symbol);
-                } else if (nonTerminals.contains(symbol)) {
-                    usedNonTerminals.add(symbol);
+        for (String terminal : terminals) {
+            boolean terminalUsed = false;
+            for (Production production : productions) {
+                String product = production.getProduct().replace("/,", "SOME_UNIQUE_CHAR");
+                String[] symbols = product.split(",");
+                for (String symbol : symbols) {
+                    symbol = symbol.replace("SOME_UNIQUE_CHAR", ",");
+                    if (symbol.equals(terminal)) {
+                        terminalUsed = true;
+                        break;
+                    }
                 }
+                if (terminalUsed) break;
+            }
+            if (!terminalUsed) {
+                controller.showMessage("El terminal '" + terminal + "' no ha sido utilizado", "Error");
+                return false;
             }
         }
 
-        if (!usedTerminals.containsAll(terminals)) {
-            controller.showMessage("No todos los terminales han sido utilizados", "Error");
-            return false;
-        }
+        for (String nonTerminal : nonTerminals) {
+            boolean nonTerminalUsed = false;
+            for (Production production : productions) {
+                if (production.getProduction().equals(nonTerminal)) {
+                    nonTerminalUsed = true;
+                    break;
+                }
 
-        if (!usedNonTerminals.containsAll(nonTerminals)) {
-            controller.showMessage("No todos los no terminales han sido utilizados", "Error");
-            return false;
+                String product = production.getProduct().replace("/,", "SOME_UNIQUE_CHAR");
+                String[] symbols = product.split(",");
+                for (String symbol : symbols) {
+                    symbol = symbol.replace("SOME_UNIQUE_CHAR", ",");
+                    if (symbol.equals(nonTerminal)) {
+                        nonTerminalUsed = true;
+                        break;
+                    }
+                }
+                if (nonTerminalUsed) break;
+            }
+            if (!nonTerminalUsed) {
+                controller.showMessage("El no terminal '" + nonTerminal + "' no ha sido utilizado", "Error");
+                return false;
+            }
         }
 
         return true;
     }
+
 
 
 
