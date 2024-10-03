@@ -130,7 +130,9 @@ public class Controller {
         boolean isValid = manager.addProduction(production);
         if (isValid) {
             //TODO: mostrar bien el producto
-            String value = "%s ➡ %s".formatted(production.getProduction(), production.getProduct());
+            String value = "%s ➡ %s".formatted(production.getProduction(), production.getProduct())
+                    .replace("/,", "SOME_UNIQUE_CHAR").replace(",", "")
+                    .replace("SOME_UNIQUE_CHAR", ",");
             ElementPanel elementPanel = new ElementPanel(value, "Produccion");
             elementPanel.setCallback(() -> {
                 //TODO: eliminar la produccion del manager
