@@ -1,4 +1,4 @@
-# Generado de arboles de derivación de gramatica formal
+# Generador de arboles de derivación de gramatica formal
 
 Este es un generador de arboles de derivación de gramatica formal.
 Genera el arbol de derivacion general de la gramatica ingresada, 

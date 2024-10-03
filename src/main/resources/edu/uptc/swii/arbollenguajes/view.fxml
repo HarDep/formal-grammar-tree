@@ -90,7 +90,7 @@
       </VBox>
       <VBox spacing="15.0" HBox.hgrow="ALWAYS">
          <children>
-            <Label alignment="CENTER" maxWidth="1.7976931348623157E308" text="Ingresa la gramatica y pruebala con una palabra" textAlignment="CENTER">
+            <Label fx:id="tileLabel" alignment="CENTER" maxWidth="1.7976931348623157E308" text="Ingresa la gramatica y pruebala con una palabra" textAlignment="CENTER">
                <padding>
                   <Insets bottom="10.0" top="10.0" />
                </padding>

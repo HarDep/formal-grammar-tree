@@ -30,25 +30,28 @@ public class GrammarManager implements Manager {
     }
 
     @Override
-    public void addNonTerminal(String value) {
+    public boolean addNonTerminal(String value) {
         //TODO: verificar si no existe en los no terminales
         //TODO: añadirlo si es valido y si no enviar mensaje de error al controlador
+        return true;
     }
 
     @Override
-    public void addTerminal(String value) {
+    public boolean addTerminal(String value) {
         //TODO: verificar si no existe en los terminales
         //TODO: añadirlo si es valido y si no enviar mensaje de error al controlador
+        return true;
     }
 
     @Override
-    public void addProduction(Production production) {
+    public boolean addProduction(Production production) {
         //TODO: verificar si hay "/," en el producto y cambiarlo a un caracter que no exista en la cadena
         //TODO: separar el producto
         //TODO: cambiar el simbolo que se cambio por la ","
         //TODO: verificar el simbolo de la produccion de la produccion existe en los no terminales
         //TODO: verificar si los simbolos del producto existen en los terminales y/o no terminales
         //TODO: añadirlo si es valido y si no enviar mensaje de error al controlador
+        return true;
     }
 
     @Override
@@ -58,9 +61,10 @@ public class GrammarManager implements Manager {
     }
 
     @Override
-    public void checkGrammar() {
+    public boolean checkGrammar() {
         //TODO: verificar que las producciones utilicen todos los terminales y todos los no terminales
         //TODO: si no es valido enviar mensaje de error al controlador y no seguir con la operacion
+        return true;
     }
 
     @Override

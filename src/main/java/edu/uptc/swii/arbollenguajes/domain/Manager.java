@@ -5,11 +5,11 @@ import edu.uptc.swii.arbollenguajes.models.Production;
 
 public interface Manager {
     void setController(Controller controller);
-    void addNonTerminal(String value);
-    void addTerminal(String value);
-    void addProduction(Production production);
+    boolean addNonTerminal(String value);
+    boolean addTerminal(String value);
+    boolean addProduction(Production production);
     void addStartSymbol(String value);
-    void checkGrammar();
+    boolean checkGrammar();
     void generateParticularTree(String word);
     void generateGeneralTree();
 }
