@@ -1,0 +1,125 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.Cursor?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.ScrollPane?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.text.Font?>
+
+<HBox minHeight="500.0" minWidth="800.0" xmlns="http://javafx.com/javafx/23" xmlns:fx="http://javafx.com/fxml/1" fx:controller="edu.uptc.swii.arbollenguajes.controllers.Controller">
+   <children>
+      <VBox maxWidth="300.0" minWidth="300.0" prefWidth="300.0">
+         <children>
+            <ScrollPane fitToHeight="true" fitToWidth="true" VBox.vgrow="ALWAYS">
+               <content>
+                  <VBox alignment="TOP_CENTER" spacing="15.0" style="-fx-background-color: gray;">
+                     <padding>
+                        <Insets bottom="15.0" left="5.0" right="5.0" top="15.0" />
+                     </padding>
+                     <children>
+                        <Button mnemonicParsing="false" onAction="#testGrammar" onMouseEntered="#onButtonEntered" onMouseExited="#onButtonExited" style="-fx-background-color: #42d9b3; -fx-border-radius: 10; -fx-background-radius: 10;" text="Probar gramatica" textFill="#4e3a5b">
+                           <cursor>
+                              <Cursor fx:constant="HAND" />
+                           </cursor>
+                        </Button>
+                        <Label text="Simbolos no terminales:" textFill="WHITE" wrapText="true" />
+                        <HBox alignment="CENTER" spacing="5.0">
+                           <children>
+                              <TextField fx:id="nonTerminalText" alignment="CENTER" promptText="simbolo" />
+                              <Button mnemonicParsing="false" onAction="#addNonTerminal" onMouseEntered="#onButtonEntered" onMouseExited="#onButtonExited" style="-fx-background-color: #42d9b3; -fx-border-radius: 10; -fx-background-radius: 10;" text="Agregar" textFill="#4e3a5b">
+                                 <cursor>
+                                    <Cursor fx:constant="HAND" />
+                                 </cursor>
+                              </Button>
+                           </children>
+                        </HBox>
+                        <ScrollPane fitToHeight="true" fitToWidth="true" maxHeight="70.0" maxWidth="210.0" minHeight="70.0" prefHeight="70.0">
+                           <content>
+                              <VBox fx:id="nonTerminalSymbolsPanel" prefHeight="200.0" prefWidth="100.0" style="-fx-background-color: gray;" />
+                           </content>
+                        </ScrollPane>
+                        <Label text="Simbolos terminales:" textFill="WHITE" wrapText="true" />
+                        <HBox alignment="CENTER" spacing="5.0">
+                           <children>
+                              <TextField fx:id="terminalText" alignment="CENTER" promptText="simbolo" />
+                              <Button mnemonicParsing="false" onAction="#addTerminal" onMouseEntered="#onButtonEntered" onMouseExited="#onButtonExited" style="-fx-background-color: #42d9b3; -fx-border-radius: 10; -fx-background-radius: 10;" text="Agregar" textFill="#4e3a5b">
+                                 <cursor>
+                                    <Cursor fx:constant="HAND" />
+                                 </cursor>
+                              </Button>
+                           </children>
+                        </HBox>
+                        <ScrollPane fitToHeight="true" fitToWidth="true" maxHeight="70.0" maxWidth="210.0" minHeight="70.0" prefHeight="70.0">
+                           <content>
+                              <VBox fx:id="terminalSymbolsPanel" prefHeight="200.0" prefWidth="100.0" style="-fx-background-color: gray;" />
+                           </content>
+                        </ScrollPane>
+                        <Label text="Producciones:" textFill="WHITE" wrapText="true" />
+                        <Label maxHeight="40.0" minHeight="40.0" prefHeight="40.0" text="cada simbolo del producto se debe separar por &quot;,&quot;, si el simbolo es &quot;,&quot;, se coloca &quot;/,&quot;" textAlignment="CENTER" textFill="WHITE" wrapText="true" />
+                        <HBox alignment="CENTER" spacing="5.0">
+                           <children>
+                              <VBox spacing="5.0">
+                                 <children>
+                                    <TextField fx:id="productionProdText" alignment="CENTER" maxWidth="1.7976931348623157E308" promptText="produccion" />
+                                    <TextField fx:id="productionProductText" alignment="CENTER" maxWidth="1.7976931348623157E308" promptText="producto" />
+                                 </children>
+                              </VBox>
+                              <Button mnemonicParsing="false" onAction="#addProduction" onMouseEntered="#onButtonEntered" onMouseExited="#onButtonExited" style="-fx-background-color: #42d9b3; -fx-background-radius: 10; -fx-border-radius: 10;" text="Agregar" textFill="#4e3a5b">
+                                 <cursor>
+                                    <Cursor fx:constant="HAND" />
+                                 </cursor>
+                              </Button>
+                           </children>
+                        </HBox>
+                        <ScrollPane fitToHeight="true" fitToWidth="true" maxHeight="70.0" maxWidth="210.0" minHeight="70.0" prefHeight="70.0">
+                           <content>
+                              <VBox fx:id="productionsPanel" prefHeight="200.0" prefWidth="100.0" style="-fx-background-color: gray;" />
+                           </content>
+                        </ScrollPane>
+                        <Label text="Simbolo de comienzo:" textFill="WHITE" wrapText="true" />
+                        <TextField fx:id="startSymbolText" alignment="CENTER" maxWidth="210.0" promptText="simbolo" />
+                     </children>
+                  </VBox>
+               </content>
+            </ScrollPane>
+         </children>
+      </VBox>
+      <VBox spacing="15.0" HBox.hgrow="ALWAYS">
+         <children>
+            <Label alignment="CENTER" maxWidth="1.7976931348623157E308" text="Ingresa la gramatica y pruebala con una palabra" textAlignment="CENTER">
+               <padding>
+                  <Insets bottom="10.0" top="10.0" />
+               </padding>
+               <font>
+                  <Font name="Arial Black" size="15.0" />
+               </font>
+            </Label>
+            <VBox prefHeight="100.0" prefWidth="100.0">
+               <children>
+                  <Label text="Arbol de derivacion particular:">
+                     <font>
+                        <Font name="System Bold" size="14.0" />
+                     </font>
+                  </Label>
+               </children>
+            </VBox>
+            <VBox prefHeight="200.0" prefWidth="100.0" VBox.vgrow="ALWAYS">
+               <children>
+                  <Label text="Arbol de derivacion general:">
+                     <font>
+                        <Font name="System Bold" size="14.0" />
+                     </font>
+                  </Label>
+               </children>
+            </VBox>
+         </children>
+         <padding>
+            <Insets bottom="5.0" left="10.0" right="10.0" top="5.0" />
+         </padding>
+      </VBox>
+   </children>
+</HBox>

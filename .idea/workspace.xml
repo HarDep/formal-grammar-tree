@@ -1,0 +1,147 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="AutoImportSettings">
+    <option name="autoReloadType" value="SELECTIVE" />
+  </component>
+  <component name="ChangeListManager">
+    <list default="true" id="70fdbed6-e550-4a54-a93d-2faaadd9cd56" name="Changes" comment="">
+      <change afterPath="$PROJECT_DIR$/.gitignore" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/.idea/encodings.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/.idea/misc.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/.idea/uiDesigner.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/.idea/vcs.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/.mvn/wrapper/maven-wrapper.jar" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/.mvn/wrapper/maven-wrapper.properties" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/mvnw" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/mvnw.cmd" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/pom.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/edu/uptc/swii/arbollenguajes/App.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/edu/uptc/swii/arbollenguajes/Main.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/edu/uptc/swii/arbollenguajes/configs/AppConfig.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/edu/uptc/swii/arbollenguajes/controllers/Controller.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/edu/uptc/swii/arbollenguajes/domain/DerivationTree.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/edu/uptc/swii/arbollenguajes/domain/GrammarManager.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/edu/uptc/swii/arbollenguajes/domain/Manager.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/edu/uptc/swii/arbollenguajes/models/Node.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/edu/uptc/swii/arbollenguajes/models/Production.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/edu/uptc/swii/arbollenguajes/models/Symbol.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/edu/uptc/swii/arbollenguajes/utils/Formater.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/edu/uptc/swii/arbollenguajes/view/MessageDialog.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/module-info.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/resources/edu/uptc/swii/arbollenguajes/view.fxml" afterDir="false" />
+    </list>
+    <option name="SHOW_DIALOG" value="false" />
+    <option name="HIGHLIGHT_CONFLICTS" value="true" />
+    <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
+    <option name="LAST_RESOLUTION" value="IGNORE" />
+  </component>
+  <component name="FileTemplateManagerImpl">
+    <option name="RECENT_TEMPLATES">
+      <list>
+        <option value="Interface" />
+        <option value="Class" />
+      </list>
+    </option>
+  </component>
+  <component name="Git.Settings">
+    <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
+  </component>
+  <component name="MavenImportPreferences">
+    <option name="generalSettings">
+      <MavenGeneralSettings>
+        <option name="mavenHomeTypeForPersistence" value="WRAPPER" />
+      </MavenGeneralSettings>
+    </option>
+  </component>
+  <component name="ProjectColorInfo">{
+  &quot;associatedIndex&quot;: 7
+}</component>
+  <component name="ProjectId" id="2m7jGwX01h827jgt7FniWJb3W3v" />
+  <component name="ProjectLevelVcsManager" settingsEditedManually="true" />
+  <component name="ProjectViewState">
+    <option name="hideEmptyMiddlePackages" value="true" />
+    <option name="showLibraryContents" value="true" />
+  </component>
+  <component name="PropertiesComponent">{
+  &quot;keyToString&quot;: {
+    &quot;Application.Main.executor&quot;: &quot;Run&quot;,
+    &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
+    &quot;SHARE_PROJECT_CONFIGURATION_FILES&quot;: &quot;true&quot;,
+    &quot;com.codeium.enabled&quot;: &quot;true&quot;,
+    &quot;git-widget-placeholder&quot;: &quot;main&quot;,
+    &quot;kotlin-language-version-configured&quot;: &quot;true&quot;,
+    &quot;node.js.detected.package.eslint&quot;: &quot;true&quot;,
+    &quot;node.js.detected.package.tslint&quot;: &quot;true&quot;,
+    &quot;node.js.selected.package.eslint&quot;: &quot;(autodetect)&quot;,
+    &quot;node.js.selected.package.tslint&quot;: &quot;(autodetect)&quot;,
+    &quot;nodejs_package_manager_path&quot;: &quot;npm&quot;,
+    &quot;vue.rearranger.settings.migration&quot;: &quot;true&quot;
+  }
+}</component>
+  <component name="RunManager">
+    <configuration name="Main" type="Application" factoryName="Application" temporary="true" nameIsGenerated="true">
+      <option name="MAIN_CLASS_NAME" value="edu.uptc.swii.arbollenguajes.Main" />
+      <module name="arbol-lenguajes" />
+      <extension name="coverage">
+        <pattern>
+          <option name="PATTERN" value="edu.uptc.swii.arbollenguajes.*" />
+          <option name="ENABLED" value="true" />
+        </pattern>
+      </extension>
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
+    <recent_temporary>
+      <list>
+        <item itemvalue="Application.Main" />
+      </list>
+    </recent_temporary>
+  </component>
+  <component name="SharedIndexes">
+    <attachedChunks>
+      <set>
+        <option value="bundled-jdk-9823dce3aa75-28b599e66164-intellij.indexing.shared.core-IU-242.23339.11" />
+        <option value="bundled-js-predefined-d6986cc7102b-5c90d61e3bab-JavaScript-IU-242.23339.11" />
+      </set>
+    </attachedChunks>
+  </component>
+  <component name="SpellCheckerSettings" RuntimeDictionaries="0" Folders="0" CustomDictionaries="0" DefaultDictionary="application-level" UseSingleDictionary="true" transferred="true" />
+  <component name="TaskManager">
+    <task active="true" id="Default" summary="Default task">
+      <changelist id="70fdbed6-e550-4a54-a93d-2faaadd9cd56" name="Changes" comment="" />
+      <created>1726434418426</created>
+      <option name="number" value="Default" />
+      <option name="presentableId" value="Default" />
+      <updated>1726434418426</updated>
+      <workItem from="1726434419723" duration="6559000" />
+      <workItem from="1726492187672" duration="181000" />
+      <workItem from="1726492497504" duration="30000" />
+      <workItem from="1726495810927" duration="891000" />
+      <workItem from="1726581531511" duration="145000" />
+      <workItem from="1727484495035" duration="1926000" />
+      <workItem from="1727525866815" duration="2023000" />
+      <workItem from="1727789458592" duration="10387000" />
+      <workItem from="1727804144391" duration="7000" />
+      <workItem from="1727812457373" duration="747000" />
+      <workItem from="1727896804158" duration="4541000" />
+      <workItem from="1727914110869" duration="4163000" />
+    </task>
+    <servers />
+  </component>
+  <component name="TypeScriptGeneratedFilesManager">
+    <option name="version" value="3" />
+  </component>
+  <component name="Vcs.Log.Tabs.Properties">
+    <option name="TAB_STATES">
+      <map>
+        <entry key="MAIN">
+          <value>
+            <State />
+          </value>
+        </entry>
+      </map>
+    </option>
+  </component>
+</project>
