@@ -31,41 +31,89 @@ public class GrammarManager implements Manager {
 
     @Override
     public boolean addNonTerminal(String value) {
-        //TODO: verificar si no existe en los no terminales
-        //TODO: añadirlo si es valido y si no enviar mensaje de error al controlador
-        return true;
+        if (terminals.contains(value)) {
+            controller.showMessage("El símbolo ya está en los terminales", "Error");
+            return false;
+        }
+        if (nonTerminals.add(value)) {
+            return true;
+        } else {
+            controller.showMessage("El símbolo no pudo ser añadido", "Error");
+            return false;
+        }
     }
+
 
     @Override
     public boolean addTerminal(String value) {
-        //TODO: verificar si no existe en los terminales
-        //TODO: añadirlo si es valido y si no enviar mensaje de error al controlador
-        return true;
+        if (nonTerminals.contains(value)) {
+            controller.showMessage("El símbolo ya está en los no terminales", "Error");
+            return false;
+        }
+        if (terminals.add(value)) {
+            return true;
+        } else {
+            controller.showMessage("El símbolo no pudo ser añadido", "Error");
+            return false;
+        }
     }
+
 
     @Override
     public boolean addProduction(Production production) {
-        //TODO: verificar si hay "/," en el producto y cambiarlo a un caracter que no exista en la cadena
-        //TODO: separar el producto
-        //TODO: cambiar el simbolo que se cambio por la ","
-        //TODO: verificar el simbolo de la produccion de la produccion existe en los no terminales
-        //TODO: verificar si los simbolos del producto existen en los terminales y/o no terminales
-        //TODO: añadirlo si es valido y si no enviar mensaje de error al controlador
+        // Reemplazar "/" por otro carácter si aparece
+        String product = production.getProduct().replace("/", "SOME_UNIQUE_CHAR");
+        // Separar los productos
+        String[] separatedProducts = product.split(",");
+
+        // Validar que el símbolo de la producción sea no terminal
+        if (!nonTerminals.contains(production.getProduction())) {
+            controller.showMessage("El símbolo de producción no es un no terminal válido", "Error");
+            return false;
+        }
+
+        // Validar que los símbolos en el producto existan en terminales o no terminales
+        for (String symbol : separatedProducts) {
+            if (!terminals.contains(symbol) && !nonTerminals.contains(symbol)) {
+                controller.showMessage("El símbolo " + symbol + " no es válido", "Error");
+                return false;
+            }
+        }
+
+        // Agregar la producción si es válida
+        productions.add(production);
         return true;
     }
+
 
     @Override
     public void addStartSymbol(String value) {
-        //TODO: verificar si existe en los no terminales
-        //TODO: añadirlo si es valido y si no enviar mensaje de error al controlador
+        if (nonTerminals.contains(value)) {
+            startSymbol = value;
+        } else {
+            controller.showMessage("El símbolo de inicio no es un no terminal válido", "Error");
+        }
     }
+
 
     @Override
     public boolean checkGrammar() {
-        //TODO: verificar que las producciones utilicen todos los terminales y todos los no terminales
-        //TODO: si no es valido enviar mensaje de error al controlador y no seguir con la operacion
+        for (Production production : productions) {
+            // Verificar que la producción tenga sentido
+            if (!nonTerminals.contains(production.getProduction())) {
+                controller.showMessage("Producción inválida: " + production.getProduction(), "Error");
+                return false;
+            }
+            for (String symbol : production.getProduct().split(",")) {
+                if (!terminals.contains(symbol) && !nonTerminals.contains(symbol)) {
+                    controller.showMessage("Símbolo inválido en la producción: " + symbol, "Error");
+                    return false;
+                }
+            }
+        }
         return true;
     }
+
 
     @Override
     public void generateParticularTree(String word) {
