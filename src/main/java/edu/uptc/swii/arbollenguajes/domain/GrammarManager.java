@@ -92,6 +92,8 @@ public class GrammarManager implements Manager {
 
     @Override
     public boolean checkGrammar() {
+        //TODO: validar si hay por lo menos -> 3 producciones, 3 no terminales y 2 terminales
+
         for (String terminal : terminals) {
             boolean terminalUsed = false;
             for (Production production : productions) {
