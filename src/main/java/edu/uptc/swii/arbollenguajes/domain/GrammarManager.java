@@ -61,18 +61,13 @@ public class GrammarManager implements Manager {
 
     @Override
     public boolean addProduction(Production production) {
-        // Reemplazar "/" por otro carácter si aparece
         String product = production.getProduct().replace("/,", "SOME_UNIQUE_CHAR");
-        // Separar los productos
         String[] separatedProducts = product.split(",");
-
-        // Validar que el símbolo de la producción sea no terminal
         if (!nonTerminals.contains(production.getProduction())) {
             controller.showMessage("El símbolo de producción no es un no terminal válido", "Error");
             return false;
         }
 
-        // Validar que los símbolos en el producto existan en terminales o no terminales
         for (String symbol : separatedProducts) {
             if (!terminals.contains(symbol) && !nonTerminals.contains(symbol)) {
                 controller.showMessage("El símbolo " + symbol + " no es válido", "Error");
@@ -80,10 +75,12 @@ public class GrammarManager implements Manager {
             }
         }
 
-        // Agregar la producción si es válida
+        production.setProduct(production.getProduct().replace("SOME_UNIQUE_CHAR", ","));
+
         productions.add(production);
         return true;
     }
+
 
 
     @Override
@@ -98,21 +95,35 @@ public class GrammarManager implements Manager {
 
     @Override
     public boolean checkGrammar() {
+        Set<String> usedTerminals = new HashSet<>();
+        Set<String> usedNonTerminals = new HashSet<>();
+
         for (Production production : productions) {
-            // Verificar que la producción tenga sentido
-            if (!nonTerminals.contains(production.getProduction())) {
-                controller.showMessage("Producción inválida: " + production.getProduction(), "Error");
-                return false;
-            }
+
+            usedNonTerminals.add(production.getProduction());
+
             for (String symbol : production.getProduct().split(",")) {
-                if (!terminals.contains(symbol) && !nonTerminals.contains(symbol)) {
-                    controller.showMessage("Símbolo inválido en la producción: " + symbol, "Error");
-                    return false;
+                if (terminals.contains(symbol)) {
+                    usedTerminals.add(symbol);
+                } else if (nonTerminals.contains(symbol)) {
+                    usedNonTerminals.add(symbol);
                 }
             }
         }
+
+        if (!usedTerminals.containsAll(terminals)) {
+            controller.showMessage("No todos los terminales han sido utilizados", "Error");
+            return false;
+        }
+
+        if (!usedNonTerminals.containsAll(nonTerminals)) {
+            controller.showMessage("No todos los no terminales han sido utilizados", "Error");
+            return false;
+        }
+
         return true;
     }
+
 
 
     @Override
