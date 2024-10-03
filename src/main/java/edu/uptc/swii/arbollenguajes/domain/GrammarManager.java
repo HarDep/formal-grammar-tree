@@ -38,7 +38,7 @@ public class GrammarManager implements Manager {
         if (nonTerminals.add(value)) {
             return true;
         } else {
-            controller.showMessage("El símbolo no pudo ser añadido", "Error");
+            controller.showMessage("El símbolo no pudo ser añadido ya está en los no terminales", "Error");
             return false;
         }
     }
@@ -53,7 +53,7 @@ public class GrammarManager implements Manager {
         if (terminals.add(value)) {
             return true;
         } else {
-            controller.showMessage("El símbolo no pudo ser añadido", "Error");
+            controller.showMessage("El símbolo no pudo ser añadido ya está en los terminales", "Error");
             return false;
         }
     }
@@ -62,7 +62,7 @@ public class GrammarManager implements Manager {
     @Override
     public boolean addProduction(Production production) {
         // Reemplazar "/" por otro carácter si aparece
-        String product = production.getProduct().replace("/", "SOME_UNIQUE_CHAR");
+        String product = production.getProduct().replace("/,", "SOME_UNIQUE_CHAR");
         // Separar los productos
         String[] separatedProducts = product.split(",");
 
