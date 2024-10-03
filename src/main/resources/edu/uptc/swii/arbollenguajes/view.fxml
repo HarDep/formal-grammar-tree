@@ -60,7 +60,7 @@
                            </content>
                         </ScrollPane>
                         <Label text="Producciones:" textFill="WHITE" wrapText="true" />
-                        <Label maxHeight="40.0" minHeight="40.0" prefHeight="40.0" text="cada simbolo del producto se debe separar por &quot;,&quot;, si el simbolo es &quot;,&quot;, se coloca &quot;/,&quot;" textAlignment="CENTER" textFill="WHITE" wrapText="true" />
+                        <Label maxHeight="40.0" minHeight="40.0" prefHeight="40.0" text="cada simbolo del producto se debe separar por &quot;,&quot; (coma), si el simbolo es &quot;,&quot;, se coloca &quot;/,&quot;" textAlignment="CENTER" textFill="WHITE" wrapText="true" />
                         <HBox alignment="CENTER" spacing="5.0">
                            <children>
                               <VBox spacing="5.0">
