@@ -88,23 +88,25 @@ public class Controller {
 
     @FXML
     protected void testGrammar(){
-        //TODO: verificar que el simbolo de comienzo exista en los no terminales
-        manager.addStartSymbol(startSymbolText.getText());
+        boolean validStartSymbol = manager.addStartSymbol(startSymbolText.getText());
+        if (!validStartSymbol) return;
+        boolean isValidGrammar = manager.checkGrammar();
+        if (!isValidGrammar) return;
         word = new WordInputDialog((Stage) terminalText.getScene().getWindow()).showAndGetWord();
-        boolean isValid = manager.checkGrammar();
-        if (!isValid) return;
         //TODO: limpiar paneles de arboles
+        particularTreeText.getChildren().clear();
         manager.generateParticularTree(word);
         manager.generateGeneralTree();
     }
 
     @FXML
     protected void addNonTerminal(){
-        boolean isValid = manager.addNonTerminal(nonTerminalText.getText());
+        String value = nonTerminalText.getText();
+        boolean isValid = manager.addNonTerminal(value);
         if (isValid) {
             ElementPanel elementPanel = new ElementPanel(nonTerminalText.getText(), "Simbolo");
             elementPanel.setCallback(() -> {
-                //TODO: eliminar el simbolo del manager
+                manager.removeNonTerminal(value);
                 nonTerminalSymbolsPanel.getChildren().remove(elementPanel);
             });
             nonTerminalSymbolsPanel.getChildren().add(elementPanel);
@@ -113,11 +115,12 @@ public class Controller {
 
     @FXML
     protected void addTerminal(){
-        boolean isValid = manager.addTerminal(terminalText.getText());
+        String value = terminalText.getText();
+        boolean isValid = manager.addTerminal(value);
         if (isValid) {
             ElementPanel elementPanel = new ElementPanel(terminalText.getText(), "Simbolo");
             elementPanel.setCallback(() -> {
-                //TODO: eliminar el simbolo del manager
+                manager.removeTerminal(value);
                 terminalSymbolsPanel.getChildren().remove(elementPanel);
             });
             terminalSymbolsPanel.getChildren().add(elementPanel);
@@ -129,13 +132,12 @@ public class Controller {
         Production production = new Production(productionProdText.getText(), productionProductText.getText());
         boolean isValid = manager.addProduction(production);
         if (isValid) {
-            //TODO: mostrar bien el producto
-            String value = "%s ➡ %s".formatted(production.getProduction(), production.getProduct())
+            String value = "%s ➡ %s".formatted(production.getProduction(), production.getProduct()
                     .replace("/,", "SOME_UNIQUE_CHAR").replace(",", "")
-                    .replace("SOME_UNIQUE_CHAR", ",");
+                    .replace("SOME_UNIQUE_CHAR", ","));
             ElementPanel elementPanel = new ElementPanel(value, "Produccion");
             elementPanel.setCallback(() -> {
-                //TODO: eliminar la produccion del manager
+                manager.removeProduction(production);
                 productionsPanel.getChildren().remove(elementPanel);
             });
             productionsPanel.getChildren().add(elementPanel);
@@ -165,6 +167,10 @@ public class Controller {
             next.setFill(Color.GRAY);
             particularTreeText.getChildren().add(next);
         }
+    }
+
+    public void showGeneralTreeNode(boolean isLast, boolean isValid, Symbol... values) {
+        //TODO: mostrar nodo del arbol
     }
 
     public void invalidWord(){

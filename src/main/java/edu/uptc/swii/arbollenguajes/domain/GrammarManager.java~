@@ -82,29 +82,12 @@ public class GrammarManager implements Manager {
     }
 
     @Override
-    public boolean addStartSymbol(String value) {
+    public void addStartSymbol(String value) {
         if (nonTerminals.contains(value)) {
             startSymbol = value;
-            return true;
         } else {
             controller.showMessage("El símbolo de inicio no es un no terminal válido", "Error");
-            return false;
         }
-    }
-
-    @Override
-    public void removeNonTerminal(String value) {
-        //TODO: eliminar el no terminal
-    }
-
-    @Override
-    public void removeTerminal(String value) {
-        //TODO: eliminar el terminal
-    }
-
-    @Override
-    public void removeProduction(Production production) {
-        //TODO: eliminar la producción
     }
 
     @Override

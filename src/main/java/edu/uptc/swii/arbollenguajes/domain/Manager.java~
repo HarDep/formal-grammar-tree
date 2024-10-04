@@ -8,10 +8,7 @@ public interface Manager {
     boolean addNonTerminal(String value);
     boolean addTerminal(String value);
     boolean addProduction(Production production);
-    boolean addStartSymbol(String value);
-    void removeNonTerminal(String value);
-    void removeTerminal(String value);
-    void removeProduction(Production production);
+    void addStartSymbol(String value);
     boolean checkGrammar();
     void generateParticularTree(String word);
     void generateGeneralTree();
