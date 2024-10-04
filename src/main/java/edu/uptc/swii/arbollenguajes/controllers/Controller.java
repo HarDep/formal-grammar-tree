@@ -22,6 +22,8 @@ import javafx.stage.Stage;
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Component;
 
+import java.util.List;
+
 import static org.springframework.beans.factory.config.BeanDefinition.SCOPE_SINGLETON;
 
 @Component
@@ -144,7 +146,7 @@ public class Controller {
         }
     }
 
-    public void showParticularTreeNode(boolean isLast, boolean isValid, Symbol... values) {
+    public void showParticularTreeNode(boolean isLast, boolean isValid, List<Symbol> values) {
         for (Symbol value : values) {
             Text text1 = new Text(value.getValue());
             text1.setFill(value.isTerminal()? Color.BLUE : Color.ORANGE);
@@ -169,7 +171,7 @@ public class Controller {
         }
     }
 
-    public void showGeneralTreeNode(boolean isLast, boolean isValid, Symbol... values) {
+    public void showGeneralTreeNode(int level, int angle, List<Symbol> values) {
         //TODO: mostrar nodo del arbol
     }
 

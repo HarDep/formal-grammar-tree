@@ -4,22 +4,32 @@ import java.util.List;
 
 public class Node {
 
-    private String product;
+    private List<Symbol> symbols;
     private List<Node> products;
     private Node father;
+    private boolean isPainted;
 
-    public Node(String product, List<Node> products, Node father) {
-        this.product = product;
+    public Node(List<Symbol> symbols, List<Node> products, Node father) {
+        this.symbols = symbols;
         this.products = products;
         this.father = father;
+        this.isPainted = false;
     }
 
-    public String getProduct() {
-        return product;
+    public boolean isPainted() {
+        return isPainted;
     }
 
-    public void setProduct(String product) {
-        this.product = product;
+    public void setPainted(boolean isPainted) {
+        this.isPainted = isPainted;
+    }
+
+    public List<Symbol> getSymbols() {
+        return symbols;
+    }
+
+    public void setSymbols(List<Symbol> symbols) {
+        this.symbols = symbols;
     }
 
     public List<Node> getProducts() {
