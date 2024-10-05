@@ -7,21 +7,21 @@ public class Node {
     private List<Symbol> symbols;
     private List<Node> products;
     private Node father;
-    private boolean isPainted;
+    private boolean isMapped;
 
     public Node(List<Symbol> symbols, List<Node> products, Node father) {
         this.symbols = symbols;
         this.products = products;
         this.father = father;
-        this.isPainted = false;
+        this.isMapped = false;
     }
 
-    public boolean isPainted() {
-        return isPainted;
+    public boolean isMapped() {
+        return isMapped;
     }
 
-    public void setPainted(boolean isPainted) {
-        this.isPainted = isPainted;
+    public void setMapped(boolean isPainted) {
+        this.isMapped = isPainted;
     }
 
     public List<Symbol> getSymbols() {

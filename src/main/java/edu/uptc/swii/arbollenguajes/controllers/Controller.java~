@@ -136,16 +136,16 @@ public class Controller {
         canvas.put(3, canvasFromLevel3);
         canvas.put(4, canvasFromLevel4);
         generalTreePanel.getChildren().clear();
-//        Node father = new Node(List.of(new Symbol("X", false)), List.of(), null);
-//        Node child1 = new Node(List.of(new Symbol("X", false), new Symbol("y", true)),
-//        List.of(), father);
-//        Node child2 = new Node(List.of(new Symbol("X", false), new Symbol("z", true)),
-//        List.of(), father);
-//        Node child3 = new Node(List.of(new Symbol("X", false), new Symbol("w", true)),
-//        List.of(), father);
-//        father.setProducts(List.of(child1, child2, child3));
-//        setCanvasLevelsWidth(3);
-//        showGeneralTreeLevel(1, List.of(father));
+        Node father = new Node(List.of(new Symbol("X", false)), List.of(), null);
+        Node child1 = new Node(List.of(new Symbol("X", false), new Symbol("y", true)),
+        List.of(), father);
+        Node child2 = new Node(List.of(new Symbol("X", false), new Symbol("z", true)),
+        List.of(), father);
+        Node child3 = new Node(List.of(new Symbol("X", false), new Symbol("w", true)),
+        List.of(), father);
+        father.setProducts(List.of(child1, child2, child3));
+        setCanvasLevelsWidth(3);
+        showGeneralTreeLevel(1, List.of(father));
     }
 
     @FXML
