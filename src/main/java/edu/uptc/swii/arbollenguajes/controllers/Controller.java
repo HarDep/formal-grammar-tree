@@ -136,16 +136,6 @@ public class Controller {
         canvas.put(3, canvasFromLevel3);
         canvas.put(4, canvasFromLevel4);
         generalTreePanel.getChildren().clear();
-//        Node father = new Node(List.of(new Symbol("X", false)), List.of(), null);
-//        Node child1 = new Node(List.of(new Symbol("X", false), new Symbol("y", true)),
-//        List.of(), father);
-//        Node child2 = new Node(List.of(new Symbol("X", false), new Symbol("z", true)),
-//        List.of(), father);
-//        Node child3 = new Node(List.of(new Symbol("X", false), new Symbol("w", true)),
-//        List.of(), father);
-//        father.setProducts(List.of(child1, child2, child3));
-//        setCanvasLevelsWidth(3);
-//        showGeneralTreeLevel(1, List.of(father));
     }
 
     @FXML
@@ -222,11 +212,13 @@ public class Controller {
             last.setFill(Color.GREEN);
             last.setFont(Font.font("Arial", FontWeight.BOLD, 25));
             particularTreeText.getChildren().add(last);
+            validWord();
         } else if (!isValid) {
             Text invalid = new Text("  ❌");
             invalid.setFill(Color.RED);
             invalid.setFont(Font.font("Arial", FontWeight.BOLD, 25));
             particularTreeText.getChildren().add(invalid);
+            invalidWord();
         } else {
             Text next = new Text("  ➡  ");
             next.setFont(Font.font("Arial", FontWeight.BOLD, 25));
@@ -272,11 +264,11 @@ public class Controller {
         showGeneralTreeLevel(level + 1, children);
     }
 
-    public void invalidWord(){
+    private void invalidWord(){
         tileLabel.setText("La palabra '" + word + "' no pertenece a la gramatica ingresada");
     }
 
-    public void validWord(){
+    private void validWord(){
         tileLabel.setText("La palabra '" + word + "' pertenece a la gramatica ingresada");
     }
 
