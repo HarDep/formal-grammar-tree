@@ -1,13 +1,14 @@
 package edu.uptc.swii.arbollenguajes.domain;
 
 import edu.uptc.swii.arbollenguajes.controllers.Controller;
+import edu.uptc.swii.arbollenguajes.models.Node;
 import edu.uptc.swii.arbollenguajes.models.Production;
+import edu.uptc.swii.arbollenguajes.models.Symbol;
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Component;
 
-import java.util.Arrays;
-import java.util.HashSet;
-import java.util.Set;
+import java.util.*;
+import java.util.stream.Collectors;
 
 import static org.springframework.beans.factory.config.BeanDefinition.SCOPE_SINGLETON;
 
@@ -205,11 +206,51 @@ public class GrammarManager implements Manager {
 
     @Override
     public void generateParticularTree(String word) {
-        //TODO: generar el arbol
+        List<String> wordSymbols = Arrays.asList(word.split(""));
+
+        Node root = new Node(Collections.singletonList(new Symbol(startSymbol, false)), new ArrayList<>(), null);
+
+        expandNode(root, wordSymbols);
+    }
+
+    private boolean expandNode(Node node, List<String> wordSymbols) {
+        if (isLeafNode(node)) {
+            return nodeMatchesWord(node, wordSymbols);
+        }
+        for (int i = 0; i < node.getSymbols().size(); i++) {
+            Symbol symbol = node.getSymbols().get(i);
+            if (!symbol.isTerminal()) {
+                for (Production production : productions) {
+                    if (production.getProduction().equals(symbol.getValue())) {
+                        List<Symbol> productionSymbols = Arrays.stream(production.getProduct().replace("/,", "SOME_UNIQUE_CHAR").split(","))
+                                .map(s -> new Symbol(s.replace("SOME_UNIQUE_CHAR", ","), terminals.contains(s)))
+                                .collect(Collectors.toList());
+                        Node childNode = new Node(productionSymbols, new ArrayList<>(), node);
+                        node.getProducts().add(childNode);
+                        if (expandNode(childNode, wordSymbols)) {
+                            return true;
+                        }
+                    }
+                }
+            }
+        }
+        return false;
+    }
+
+    private boolean isLeafNode(Node node) {
+        return node.getSymbols().stream().allMatch(Symbol::isTerminal);
+    }
+
+    private boolean nodeMatchesWord(Node node, List<String> wordSymbols) {
+        List<String> nodeTerminals = node.getSymbols().stream()
+                .filter(Symbol::isTerminal)
+                .map(Symbol::getValue)
+                .collect(Collectors.toList());
+        return nodeTerminals.equals(wordSymbols);
     }
 
     @Override
-    public void generateGeneralTree() {
+    public void generateGeneralTree(){
         //TODO: generar el arbol solo hasta nivel 5
     }
 
