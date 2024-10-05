@@ -245,7 +245,7 @@ public class GrammarManager implements Manager {
         List<String> nodeTerminals = node.getSymbols().stream()
                 .filter(Symbol::isTerminal)
                 .map(Symbol::getValue)
-                .collect(Collectors.toList());
+                .toList();
         return nodeTerminals.equals(wordSymbols);
     }
 
