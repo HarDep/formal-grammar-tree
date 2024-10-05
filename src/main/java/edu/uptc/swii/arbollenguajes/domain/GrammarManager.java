@@ -5,6 +5,7 @@ import edu.uptc.swii.arbollenguajes.models.Production;
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Component;
 
+import java.util.Arrays;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -94,18 +95,61 @@ public class GrammarManager implements Manager {
 
     @Override
     public void removeNonTerminal(String value) {
-        //TODO: eliminar el no terminal
+        for (Production production : productions) {
+            if (production.getProduction().equals(value)) {
+                controller.showMessage("El no terminal '" + value + "' está siendo utilizado en una producción", "Error");
+                return;
+            }
+            String product = production.getProduct().replace("/,", "SOME_UNIQUE_CHAR");
+            String[] symbols = product.split(",");
+            for (int i = 0; i < symbols.length; i++) {
+                symbols[i] = symbols[i].replace("SOME_UNIQUE_CHAR", ",");
+            }
+
+            for (String symbol : symbols) {
+                if (symbol.equals(value)) {
+                    controller.showMessage("El no terminal '" + value + "' está siendo utilizado en el producto de una producción", "Error");
+                    return;
+                }
+            }
+        }
+        nonTerminals.remove(value);
+        controller.showMessage("El no terminal '" + value + "' ha sido eliminado", "Info");
     }
 
     @Override
     public void removeTerminal(String value) {
-        //TODO: eliminar el terminal
+        for (Production production : productions) {
+            String product = production.getProduct().replace("/,", "SOME_UNIQUE_CHAR");
+            String[] symbols = product.split(",");
+            for (int i = 0; i < symbols.length; i++) {
+                symbols[i] = symbols[i].replace("SOME_UNIQUE_CHAR", ",");
+            }
+
+            for (String symbol : symbols) {
+                if (symbol.equals(value)) {
+                    controller.showMessage("El terminal '" + value + "' está siendo utilizado en el producto de una producción", "Error");
+                    return;
+                }
+            }
+        }
+        terminals.remove(value);
+        controller.showMessage("El terminal '" + value + "' ha sido eliminado", "Info");
     }
 
     @Override
     public void removeProduction(Production production) {
-        //TODO: eliminar la producción
+        // Verificar si la producción existe en el conjunto de producciones
+        if (!productions.contains(production)) {
+            controller.showMessage("La producción especificada no existe", "Error");
+            return;
+        }
+
+        // Si existe, eliminarla
+        productions.remove(production);
+        controller.showMessage("La producción ha sido eliminada", "Info");
     }
+
 
     @Override
     public boolean checkGrammar() {
