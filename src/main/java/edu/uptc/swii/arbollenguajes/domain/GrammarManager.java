@@ -9,6 +9,7 @@ import org.springframework.stereotype.Component;
 
 import java.util.*;
 import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 import static org.springframework.beans.factory.config.BeanDefinition.SCOPE_SINGLETON;
 
@@ -25,6 +26,8 @@ public class GrammarManager implements Manager {
     private final Set<Production> productions = new HashSet<>();
 
     private String startSymbol;
+
+    private int level = 1;
 
     @Override
     public void setController(Controller controller) {
@@ -154,8 +157,25 @@ public class GrammarManager implements Manager {
 
     @Override
     public boolean checkGrammar() {
-        //TODO: validar si hay por lo menos -> 3 producciones, 3 no terminales y 2 terminales
+        // Verificar que haya al menos 3 producciones
+        if (productions.size() < 3) {
+            controller.showMessage("Debe haber al menos 3 producciones", "Error");
+            return false;
+        }
 
+        // Verificar que haya al menos 3 no terminales
+        if (nonTerminals.size() < 3) {
+            controller.showMessage("Debe haber al menos 3 no terminales", "Error");
+            return false;
+        }
+
+        // Verificar que haya al menos 2 terminales
+        if (terminals.size() < 2) {
+            controller.showMessage("Debe haber al menos 2 terminales", "Error");
+            return false;
+        }
+
+        // Validar que todos los terminales se utilicen en alguna producción
         for (String terminal : terminals) {
             boolean terminalUsed = false;
             for (Production production : productions) {
@@ -176,6 +196,7 @@ public class GrammarManager implements Manager {
             }
         }
 
+        // Validar que todos los no terminales se utilicen en alguna producción
         for (String nonTerminal : nonTerminals) {
             boolean nonTerminalUsed = false;
             for (Production production : productions) {
@@ -204,29 +225,32 @@ public class GrammarManager implements Manager {
         return true;
     }
 
+
     @Override
     public void generateParticularTree(String word) {
         List<String> wordSymbols = Arrays.asList(word.split(""));
-
         Node root = new Node(Collections.singletonList(new Symbol(startSymbol, false)), new ArrayList<>(), null);
-
         expandNode(root, wordSymbols);
+
     }
 
     private boolean expandNode(Node node, List<String> wordSymbols) {
         if (isLeafNode(node)) {
             return nodeMatchesWord(node, wordSymbols);
         }
+
         for (int i = 0; i < node.getSymbols().size(); i++) {
             Symbol symbol = node.getSymbols().get(i);
             if (!symbol.isTerminal()) {
                 for (Production production : productions) {
                     if (production.getProduction().equals(symbol.getValue())) {
-                        List<Symbol> productionSymbols = Arrays.stream(production.getProduct().replace("/,", "SOME_UNIQUE_CHAR").split(","))
-                                .map(s -> new Symbol(s.replace("SOME_UNIQUE_CHAR", ","), terminals.contains(s)))
+                        List<Symbol> productionSymbols = Arrays.stream(production.getProduct().split(","))
+                                .map(s -> new Symbol(s, terminals.contains(s)))
                                 .collect(Collectors.toList());
+
                         Node childNode = new Node(productionSymbols, new ArrayList<>(), node);
                         node.getProducts().add(childNode);
+
                         if (expandNode(childNode, wordSymbols)) {
                             return true;
                         }
@@ -236,6 +260,8 @@ public class GrammarManager implements Manager {
         }
         return false;
     }
+
+
 
     private boolean isLeafNode(Node node) {
         return node.getSymbols().stream().allMatch(Symbol::isTerminal);
@@ -251,7 +277,102 @@ public class GrammarManager implements Manager {
 
     @Override
     public void generateGeneralTree(){
-        //TODO: generar el arbol solo hasta nivel 5
+        level = 1;
+        Node father = new Node(Collections.singletonList(new Symbol(startSymbol, false)), null, null);
+        generateNode(father);
+        int maxTotalNodesPerLevelInAll = getCantNodesInTheMaxLevel(father);
+        controller.setCanvasLevelsWidth(maxTotalNodesPerLevelInAll);
+        controller.showGeneralTreeLevel(1, Collections.singletonList(father));
+    }
+
+    private void generateNode(Node node) {
+        if (node.getProducts() != null && level == 1) return;
+        if (node.isMapped()) {
+            generateNode(nextNode(node));
+            return;
+        }
+        node.setMapped(true);
+        if (level == 5) {
+            level = node.getFather().getLevel();
+            generateNode(node.getFather());
+            return;
+        }
+        List<Node> children = new ArrayList<>();
+        int count = 0;
+        for (Symbol symbol : node.getSymbols()) {
+            if (!symbol.isTerminal()) {
+                List<Production> productions = getProductions(symbol);
+                for (Production production : productions) {
+                    Node child = new Node(getSymbols(production, node.getSymbols(), count), null, node);
+                    children.add(child);
+                }
+            }
+            count++;
+        }
+        node.setProducts(children.isEmpty() ? null : children);
+        generateNode(nextNode(node));
+    }
+
+    private List<Symbol> getSymbols(Production production, List<Symbol> symbols, int count) {
+        List<Symbol> symbols1 = new ArrayList<>();
+        int counter = 0;
+        for (Symbol symbol : symbols) {
+            if (counter == count && !symbol.isTerminal()) {
+                String product = production.getProduct().replace("/,", "SOME_UNIQUE_CHAR");
+                String[] separatedProducts = product.split(",");
+                for (int i = 0; i < separatedProducts.length; i++) {
+                    separatedProducts[i] = separatedProducts[i].replace("SOME_UNIQUE_CHAR", ",");
+                }
+                symbols1.addAll(Arrays.stream(separatedProducts)
+                        .map(v -> new Symbol(v, this.terminals.contains(v))).toList());
+            } else symbols1.add(symbol);
+            counter++;
+        }
+        return symbols1;
+    }
+
+    private List<Production> getProductions(Symbol symbol) {
+        List<Production> productions = new ArrayList<>();
+        for (Production production : this.productions) {
+            if (production.getProduction().equals(symbol.getValue())) {
+                productions.add(production);
+            }
+        }
+        return productions;
+    }
+
+    private Node nextNode(Node node) {
+        if (node.getProducts() != null) {
+            for (Node product : node.getProducts()) {
+                if (!product.isMapped()) {
+                    level = product.getLevel();
+                    return product;
+                }
+            }
+        }
+        level = node.getFather() != null ? node.getFather().getLevel() : 1;
+        return node.getFather();
+    }
+
+    private int getCantNodesInTheMaxLevel(Node father) {
+        int cantLevel1 = 1;
+        int cantLevel2 = father.getProducts().size();
+        List<Node> productsLevel3 = new ArrayList<>();
+        father.getProducts().forEach(node -> {
+            if (node.getProducts() != null) productsLevel3.addAll(node.getProducts());
+        });
+        int cantLevel3 = productsLevel3.size();
+        List<Node> productsLevel4 = new ArrayList<>();
+        productsLevel3.forEach(node -> {
+            if (node.getProducts() != null) productsLevel4.addAll(node.getProducts());
+        });
+        int cantLevel4 = productsLevel4.size();
+        List<Node> productsLevel5 = new ArrayList<>();
+        productsLevel4.forEach(node -> {
+            if (node.getProducts() != null) productsLevel5.addAll(node.getProducts());
+        });
+        int cantLevel5 = productsLevel5.size();
+        return Stream.of(cantLevel1, cantLevel2, cantLevel3, cantLevel4, cantLevel5).max(Integer::compareTo).get();
     }
 
 }
