@@ -13,6 +13,9 @@ import javafx.stage.Modality;
 import javafx.stage.Stage;
 import javafx.stage.StageStyle;
 
+/**
+ * @implNote This class is component used to show a dialog with the word to evaluate
+ */
 public class WordInputDialog {
 
     private final Stage stage;
@@ -41,11 +44,28 @@ public class WordInputDialog {
         textField = new TextField();
         textField.setPromptText("Ingrese la palabra");
         textField.setAlignment(Pos.CENTER);
-        Button closeButton = new CloseButton(e -> stage.close());
-        vbox.getChildren().addAll(titleLabel, messageLabel, textField,closeButton);
+        Button aceptButton = getButton();
+        vbox.getChildren().addAll(titleLabel, messageLabel, textField, aceptButton);
         stage.setScene(new Scene(vbox, 300, 200));
     }
 
+    /**
+     * Return a button to accept the word
+     * @return a button with the specified properties
+     */
+    private Button getButton() {
+        Button aceptButton = new Button("Aceptar");
+        aceptButton.setStyle("-fx-background-color: #42d9b3; -fx-border-radius: 10; -fx-background-radius: 10;");
+        aceptButton.setOnMouseEntered(e -> aceptButton.setStyle("-fx-background-color: #539a89; -fx-border-radius: 10; -fx-background-radius: 10;"));
+        aceptButton.setOnMouseExited(e -> aceptButton.setStyle("-fx-background-color: #42d9b3; -fx-border-radius: 10; -fx-background-radius: 10;"));
+        aceptButton.setOnAction(e -> stage.close());
+        return aceptButton;
+    }
+
+    /**
+     * Show the dialog and return the word written by the user
+     * @return the word written by the user
+     */
     public String showAndGetWord() {
         stage.showAndWait();
         return textField.getText();

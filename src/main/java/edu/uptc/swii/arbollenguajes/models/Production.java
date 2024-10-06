@@ -2,6 +2,9 @@ package edu.uptc.swii.arbollenguajes.models;
 
 import java.util.Objects;
 
+/**
+ * @implNote This class represents a production of the grammar
+ */
 public class Production {
 
     private String production;

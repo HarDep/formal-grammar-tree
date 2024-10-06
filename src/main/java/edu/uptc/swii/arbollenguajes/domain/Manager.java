@@ -3,6 +3,9 @@ package edu.uptc.swii.arbollenguajes.domain;
 import edu.uptc.swii.arbollenguajes.controllers.Controller;
 import edu.uptc.swii.arbollenguajes.models.Production;
 
+/**
+ * @implNote This interface is used by the {@link Controller}
+ */
 public interface Manager {
     void setController(Controller controller);
     boolean addNonTerminal(String value);

@@ -4,6 +4,9 @@ import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.scene.control.Button;
 
+/**
+ * @implNote This class is a button that closes the window.
+ */
 public class CloseButton extends Button {
 
     public CloseButton(EventHandler<ActionEvent> event) {

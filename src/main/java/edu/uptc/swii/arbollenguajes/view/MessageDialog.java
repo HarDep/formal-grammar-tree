@@ -13,6 +13,9 @@ import javafx.stage.Modality;
 import javafx.stage.Stage;
 import javafx.stage.StageStyle;
 
+/**
+ * @implNote This class is used to show a message dialog
+ */
 public class MessageDialog {
 
     private final Stage stage;
@@ -43,6 +46,9 @@ public class MessageDialog {
         stage.setScene(new Scene(vbox, 300, 200));
     }
 
+    /**
+     * Shows the message dialog. The method will block until the dialog is closed.
+     */
     public void show() {
         stage.showAndWait();
     }

@@ -13,6 +13,10 @@ import java.util.stream.Stream;
 
 import static org.springframework.beans.factory.config.BeanDefinition.SCOPE_SINGLETON;
 
+/**
+ * @implNote this class implements the {@link Manager} interface
+ * contains the logic to manage the grammar
+ */
 @Component
 @Scope(SCOPE_SINGLETON)
 public class GrammarManager implements Manager {

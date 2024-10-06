@@ -9,6 +9,9 @@ import javafx.scene.layout.Region;
 import javafx.scene.paint.Color;
 import javafx.scene.text.TextAlignment;
 
+/**
+ * @implNote This class represent visually an element of the grammar
+ */
 public class ElementPanel extends HBox {
 
     private Callbacks.VoidCallback callback;
@@ -27,6 +30,10 @@ public class ElementPanel extends HBox {
         setPrefWidth(Region.USE_COMPUTED_SIZE);
     }
 
+    /**
+     * Create a button to delete the element
+     * @return a button with the specified style
+     */
     private Button getButton() {
         Button deleteButton = new Button("Eliminar");
         deleteButton.setStyle("-fx-background-color: #cf5a51; -fx-border-radius: 10; -fx-background-radius: 10;");
@@ -36,6 +43,10 @@ public class ElementPanel extends HBox {
         return deleteButton;
     }
 
+    /**
+     * Sets the callback to be called when the delete button is clicked
+     * @param callback the callback to be called
+     */
     public void setCallback(Callbacks.VoidCallback callback) {
         this.callback = callback;
     }

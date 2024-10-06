@@ -1,3 +1,8 @@
+
+/**
+ * @implNote This module is the main module of the project
+ * It is used to get access to the dependencies of the project
+ */
 module edu.uptc.swii.arbollenguajes {
     requires javafx.controls;
     requires javafx.fxml;

@@ -2,6 +2,9 @@ package edu.uptc.swii.arbollenguajes.models;
 
 import java.util.List;
 
+/**
+ * @implNote This class represents a node of the tree for the grammar
+ */
 public class Node {
 
     private List<Symbol> symbols;

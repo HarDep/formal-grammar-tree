@@ -1,5 +1,8 @@
 package edu.uptc.swii.arbollenguajes.models;
 
+/**
+ * @implNote This class represents a symbol for the grammar
+ */
 public class Symbol {
 
     private String value;
