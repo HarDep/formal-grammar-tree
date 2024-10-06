@@ -8,12 +8,18 @@ public class Node {
     private List<Node> products;
     private Node father;
     private boolean isMapped;
+    private final int level;
 
     public Node(List<Symbol> symbols, List<Node> products, Node father) {
         this.symbols = symbols;
         this.products = products;
         this.father = father;
         this.isMapped = false;
+        this.level = father == null ? 1 : father.getLevel() + 1;
+    }
+
+    public int getLevel() {
+        return level;
     }
 
     public boolean isMapped() {

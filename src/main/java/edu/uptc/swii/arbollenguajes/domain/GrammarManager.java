@@ -75,7 +75,7 @@ public class GrammarManager implements Manager {
                 return false;
             }
         }
-        boolean isAdded = productions.add(production);
+        boolean isAdded =productions.add(production);
         if (!isAdded) {
             controller.showMessage("La producción ya ha sido anadida", "Advertencia");
             return false;
@@ -250,48 +250,8 @@ public class GrammarManager implements Manager {
     }
 
     @Override
-    public void generateGeneralTree() {
-        int maxLevels = 5;
-        Node root = new Node(Collections.singletonList(new Symbol(startSymbol, false)), new ArrayList<>(), null);
-        List<Node> currentLevel = new ArrayList<>();
-        currentLevel.add(root);
-        controller.setCanvasLevelsWidth(maxLevels);
-        for (int level = 1; level <= maxLevels; level++) {
-            List<Node> nextLevel = new ArrayList<>();
-            for (Node node : currentLevel) {
-                expandGeneralTreeNode(node);
-                nextLevel.addAll(node.getProducts());
-            }
-            controller.showGeneralTreeLevel(level, currentLevel);
-            if (nextLevel.isEmpty()) {
-                break;
-            }
-            currentLevel = nextLevel;
-        }
-    }
-
-    private void expandGeneralTreeNode(Node node) {
-        List<Symbol> symbols = node.getSymbols();
-        for (Symbol symbol : symbols) {
-            if (!symbol.isTerminal()) {
-                List<Production> possibleProductions = getProductionsForSymbol(symbol);
-                for (Production production : possibleProductions) {
-                    List<Symbol> productSymbols = productionToSymbols(production.getProduct());
-                    Node childNode = new Node(productSymbols, new ArrayList<>(), node);
-                    node.getProducts().add(childNode);
-                }
-            }
-        }
-    }
-    private List<Production> getProductionsForSymbol(Symbol symbol) {
-        return productions.stream()
-                .filter(p -> p.getProduction().equals(symbol.getValue()))
-                .collect(Collectors.toList());
-    }
-    private List<Symbol> productionToSymbols(String product) {
-        return Arrays.stream(product.split(","))
-                .map(s -> new Symbol(s, terminals.contains(s))) // Identificamos si es terminal o no
-                .collect(Collectors.toList());
+    public void generateGeneralTree(){
+        //TODO: generar el arbol solo hasta nivel 5
     }
 
 }

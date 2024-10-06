@@ -10,9 +10,7 @@ import edu.uptc.swii.arbollenguajes.view.WordInputDialog;
 import javafx.application.Platform;
 import javafx.fxml.FXML;
 import javafx.scene.canvas.Canvas;
-import javafx.scene.control.Button;
-import javafx.scene.control.Label;
-import javafx.scene.control.TextField;
+import javafx.scene.control.*;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.Region;
@@ -23,10 +21,7 @@ import javafx.stage.Stage;
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Component;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 import static org.springframework.beans.factory.config.BeanDefinition.SCOPE_SINGLETON;
 
@@ -144,15 +139,17 @@ public class Controller {
         if (!validStartSymbol) return;
         boolean isValidGrammar = manager.checkGrammar();
         if (!isValidGrammar) return;
-        word = new WordInputDialog((Stage) terminalText.getScene().getWindow()).showAndGetWord();
-        levels.forEach((e, v) -> v.getChildren().clear());
-        canvas.forEach((e, v) -> {
-            v.getGraphicsContext2D().setFill(Color.WHITE);
-            v.getGraphicsContext2D().fillRect(0, 0, v.getWidth(), v.getHeight());
+        Platform.runLater(() -> {
+            word = new WordInputDialog((Stage) terminalText.getScene().getWindow()).showAndGetWord();
+            levels.forEach((e, v) -> v.getChildren().clear());
+            canvas.forEach((e, v) -> {
+                v.getGraphicsContext2D().setFill(Color.WHITE);
+                v.getGraphicsContext2D().fillRect(0, 0, v.getWidth(), v.getHeight());
+            });
+            particularTreeText.getChildren().clear();
+            //manager.generateParticularTree(word);
+            manager.generateGeneralTree();
         });
-        particularTreeText.getChildren().clear();
-        manager.generateParticularTree(word);
-        manager.generateGeneralTree();
     }
 
     @FXML
@@ -232,14 +229,26 @@ public class Controller {
     }
 
     public void showGeneralTreeLevel(int level, List<Node> values) {
-        if (values.isEmpty()) return;
+        if (values.isEmpty()) {
+            Stage stage = (Stage) generalTreePanel.getScene().getWindow();
+            stage.setFullScreen(true);
+            return;
+        }
         HBox levelPanel = levels.get(level);
-        int totalAllChildren = values.stream().mapToInt(e -> e.getProducts().size()).sum();
-        Canvas canvasLevel = canvas.get(level);
-        double posChild = (canvasLevel.getWidth()/2) - ((((double) totalAllChildren * NODE_WIDTH) /2) - ((double) NODE_WIDTH /2));
-        double posFather = (canvasLevel.getWidth()/2) - ((((double) values.size() * NODE_WIDTH) /2) - ((double) NODE_WIDTH /2));
-        canvasLevel.getGraphicsContext2D().setStroke(Color.BLACK);
-        canvasLevel.getGraphicsContext2D().setLineWidth(2);
+        int totalAllChildren = values.stream().mapToInt(e -> {
+            if (e.getProducts() != null) return e.getProducts().size();
+            return 0;
+        }).sum();
+        Canvas canvasLevel = null;
+        double posFather = 0;
+        double posChild = 0;
+        if (level < 5) {
+            canvasLevel = canvas.get(level);
+            posChild = (canvasLevel.getWidth()/2) - ((((double) totalAllChildren * NODE_WIDTH) /2) - ((double) NODE_WIDTH /2));
+            posFather = (canvasLevel.getWidth()/2) - ((((double) values.size() * NODE_WIDTH) /2) - ((double) NODE_WIDTH /2));
+            canvasLevel.getGraphicsContext2D().setStroke(Color.BLACK);
+            canvasLevel.getGraphicsContext2D().setLineWidth(2);
+        }
         List<Node> children = new ArrayList<>();
         for (Node value : values) {
             TextFlow textFlow = new TextFlow();
@@ -253,14 +262,17 @@ public class Controller {
                 textFlow.getChildren().add(text1);
             }
             levelPanel.getChildren().add(textFlow);
-            for (Node product : value.getProducts()) {
-                canvasLevel.getGraphicsContext2D().strokeLine(posFather, 0, posChild, canvasLevel.getHeight());
-                posChild += NODE_WIDTH;
-                children.add(product);
+            if (value.getProducts() != null && level < 5) {
+                for (Node product : value.getProducts()) {
+                    canvasLevel.getGraphicsContext2D().strokeLine(posFather, 0, posChild, canvasLevel.getHeight());
+                    posChild += NODE_WIDTH;
+                    children.add(product);
+                }
             }
             posFather += NODE_WIDTH;
         }
-        generalTreePanel.getChildren().addAll(levelPanel, canvasLevel);
+        if (level == 5) generalTreePanel.getChildren().add(levelPanel);
+        else generalTreePanel.getChildren().addAll(levelPanel, canvasLevel);
         showGeneralTreeLevel(level + 1, children);
     }
 
