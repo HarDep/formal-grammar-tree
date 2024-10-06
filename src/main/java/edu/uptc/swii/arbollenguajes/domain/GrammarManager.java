@@ -157,8 +157,25 @@ public class GrammarManager implements Manager {
 
     @Override
     public boolean checkGrammar() {
-        //TODO: validar si hay por lo menos -> 3 producciones, 3 no terminales y 2 terminales
+        // Verificar que haya al menos 3 producciones
+        if (productions.size() < 3) {
+            controller.showMessage("Debe haber al menos 3 producciones", "Error");
+            return false;
+        }
 
+        // Verificar que haya al menos 3 no terminales
+        if (nonTerminals.size() < 3) {
+            controller.showMessage("Debe haber al menos 3 no terminales", "Error");
+            return false;
+        }
+
+        // Verificar que haya al menos 2 terminales
+        if (terminals.size() < 2) {
+            controller.showMessage("Debe haber al menos 2 terminales", "Error");
+            return false;
+        }
+
+        // Validar que todos los terminales se utilicen en alguna producción
         for (String terminal : terminals) {
             boolean terminalUsed = false;
             for (Production production : productions) {
@@ -179,6 +196,7 @@ public class GrammarManager implements Manager {
             }
         }
 
+        // Validar que todos los no terminales se utilicen en alguna producción
         for (String nonTerminal : nonTerminals) {
             boolean nonTerminalUsed = false;
             for (Production production : productions) {
@@ -207,29 +225,32 @@ public class GrammarManager implements Manager {
         return true;
     }
 
+
     @Override
     public void generateParticularTree(String word) {
         List<String> wordSymbols = Arrays.asList(word.split(""));
-
         Node root = new Node(Collections.singletonList(new Symbol(startSymbol, false)), new ArrayList<>(), null);
-
         expandNode(root, wordSymbols);
+
     }
 
     private boolean expandNode(Node node, List<String> wordSymbols) {
         if (isLeafNode(node)) {
             return nodeMatchesWord(node, wordSymbols);
         }
+
         for (int i = 0; i < node.getSymbols().size(); i++) {
             Symbol symbol = node.getSymbols().get(i);
             if (!symbol.isTerminal()) {
                 for (Production production : productions) {
                     if (production.getProduction().equals(symbol.getValue())) {
-                        List<Symbol> productionSymbols = Arrays.stream(production.getProduct().replace("/,", "SOME_UNIQUE_CHAR").split(","))
-                                .map(s -> new Symbol(s.replace("SOME_UNIQUE_CHAR", ","), terminals.contains(s)))
+                        List<Symbol> productionSymbols = Arrays.stream(production.getProduct().split(","))
+                                .map(s -> new Symbol(s, terminals.contains(s)))
                                 .collect(Collectors.toList());
+
                         Node childNode = new Node(productionSymbols, new ArrayList<>(), node);
                         node.getProducts().add(childNode);
+
                         if (expandNode(childNode, wordSymbols)) {
                             return true;
                         }
@@ -239,6 +260,8 @@ public class GrammarManager implements Manager {
         }
         return false;
     }
+
+
 
     private boolean isLeafNode(Node node) {
         return node.getSymbols().stream().allMatch(Symbol::isTerminal);
