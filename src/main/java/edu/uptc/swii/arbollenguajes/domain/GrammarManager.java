@@ -231,137 +231,56 @@ public class GrammarManager implements Manager {
         return true;
     }
 
-
     @Override
     public void generateParticularTree(String word) {
-        controller.showParticularTreeNode(father.getProducts() == null, true, father.getSymbols());
-        checkParticularTreeNode(father.getProducts(), word, father);
-    }
-
-    private void checkParticularTreeNode(List<Node> products, String word, Node father) {
-        Node nodeParticular = null;
-        List<Node> possibles = new ArrayList<>();
-        for (Node node : products) {
-            if(checkExact(node.getSymbols(), word)) nodeParticular = node;
-            else if (checkPossible(node.getSymbols(), word)) possibles.add(node);
-        }
+        Node nodeParticular = getParticularTreeNode(word);
         if (nodeParticular == null) {
-            if (possibles.isEmpty()) {
-                controller.showParticularTreeNode(false, false, new ArrayList<>());
-                return;
-            }
-            nodeParticular = possibles.get(0);
+            controller.showParticularTreeNode(true, false, new ArrayList<>());
+            return;
         }
-        if (father.getLevel() == 4) {
-            List<Node> toCreate = new ArrayList<>(possibles);
-            toCreate.add(nodeParticular);
-            for (Node node : toCreate) {
-                List<Node> children = new ArrayList<>();
-                int count = 0;
-                for (Symbol symbol : node.getSymbols()) {
-                    if (!symbol.isTerminal()) {
-                        List<Production> productions = getProductions(symbol);
-                        for (Production production : productions) {
-                            Node child = new Node(getSymbols(production, father.getSymbols(), count), null, node);
-                            children.add(child);
-                        }
-                    }
-                    count++;
-                }
-                node.setProducts(children.isEmpty() ? null : children);
-            }
+        List<Node> path = new ArrayList<>();
+        path.add(nodeParticular);
+        Node particularFather = nodeParticular.getFather();
+        path.add(particularFather);
+        while (particularFather.getFather() != null) {
+            path.add(particularFather.getFather());
+            particularFather = particularFather.getFather();
         }
-        boolean isLast = String.join("", nodeParticular.getSymbols().stream().map(Symbol::getValue)
-                .toList()).equals(word);
-        controller.showParticularTreeNode(isLast, true, nodeParticular.getSymbols());
-        if (!isLast) checkParticularTreeNode(nodeParticular.getProducts(), word, nodeParticular);
+        path.sort(Comparator.comparing(Node::getLevel));
+        for (Node node : path) {
+            controller.showParticularTreeNode(node == nodeParticular, true, node.getSymbols());
+        }
     }
 
-    private boolean checkPossible(List<Symbol> symbols, String word) {
-        StringBuilder value = new StringBuilder();
-        int count = -1;
-        for (Symbol symbol : symbols) {
-            count++;
-            if (symbol.isTerminal()) value.append(symbol.getValue());
-            else break;
-        }
-        if (value.toString().equals(word.substring(0, count + 1))) {
-            Symbol symbol = symbols.get(count);
-            List<Production> productions = getProductions(symbol);
-            for (Production production : productions) {
-                String productValue = production.getProduct().replaceAll("/,", "SOME_UNIQUE_CHAR");
-                int index = productValue.contains(",") ? productValue.indexOf(",") : productValue.length();
-                System.out.println(word.substring(count + 1));
-                System.out.println(productValue.substring(0, index)
-                        .replaceAll("SOME_UNIQUE_CHAR", ","));
-                if (word.substring(count + 1).contains(productValue.substring(0, index)
-                        .replaceAll("SOME_UNIQUE_CHAR", ","))) return true;
-            }
-            return false;
-        }
-        return false;
-    }
+    private Node getParticularTreeNode(String word) {
+        List<Node> possibles = new ArrayList<>(father.getProducts());
+        List<Node> productsLevel3 = new ArrayList<>();
+        father.getProducts().forEach(node -> {
+            if (node.getProducts() != null) productsLevel3.addAll(node.getProducts());
+        });
+        possibles.addAll(productsLevel3);
+        List<Node> productsLevel4 = new ArrayList<>();
+        productsLevel3.forEach(node -> {
+            if (node.getProducts() != null) productsLevel4.addAll(node.getProducts());
+        });
+        possibles.addAll(productsLevel4);
+        List<Node> productsLevel5 = new ArrayList<>();
+        productsLevel4.forEach(node -> {
+            if (node.getProducts() != null) productsLevel5.addAll(node.getProducts());
+        });
+        possibles.addAll(productsLevel5);
+        possibles.add(father);
 
-    private boolean checkExact(List<Symbol> symbols, String word) {
-        StringBuilder value = new StringBuilder();
-        int count = -1;
-        for (Symbol symbol : symbols) {
-            count++;
-            if (symbol.isTerminal()) value.append(symbol.getValue());
-            else break;
-        }
-        if (value.toString().equals(word.substring(0, count + 1))) {
-            Symbol symbol = symbols.get(count);
-            List<Production> productions = getProductions(symbol);
-            for (Production production : productions) {
-                String productValue = production.getProduct().replaceAll("/,", "SOME_UNIQUE_CHAR");
-                if (productValue.replaceAll("SOME_UNIQUE_CHAR", ",")
-                        .equals(word.substring(count + 1))) return true;
-            }
-            return false;
-        }
-        return false;
-    }
+        List<Node> onlyLeaf = possibles.stream().filter(n -> n.getSymbols().stream()
+                .allMatch(Symbol::isTerminal)).toList();
 
-    private boolean expandNode(Node node, List<String> wordSymbols) {
-        if (isLeafNode(node)) {
-            return nodeMatchesWord(node, wordSymbols);
-        }
-
-        for (int i = 0; i < node.getSymbols().size(); i++) {
-            Symbol symbol = node.getSymbols().get(i);
-            if (!symbol.isTerminal()) {
-                for (Production production : productions) {
-                    if (production.getProduction().equals(symbol.getValue())) {
-                        List<Symbol> productionSymbols = Arrays.stream(production.getProduct().split(","))
-                                .map(s -> new Symbol(s, terminals.contains(s)))
-                                .collect(Collectors.toList());
-
-                        Node childNode = new Node(productionSymbols, new ArrayList<>(), node);
-                        node.getProducts().add(childNode);
-
-                        if (expandNode(childNode, wordSymbols)) {
-                            return true;
-                        }
-                    }
-                }
+        for (Node node : onlyLeaf) {
+            String value = String.join("", node.getSymbols().stream().map(Symbol::getValue).toList());
+            if (value.equals(word)) {
+                return node;
             }
         }
-        return false;
-    }
-
-
-
-    private boolean isLeafNode(Node node) {
-        return node.getSymbols().stream().allMatch(Symbol::isTerminal);
-    }
-
-    private boolean nodeMatchesWord(Node node, List<String> wordSymbols) {
-        List<String> nodeTerminals = node.getSymbols().stream()
-                .filter(Symbol::isTerminal)
-                .map(Symbol::getValue)
-                .toList();
-        return nodeTerminals.equals(wordSymbols);
+        return null;
     }
 
     @Override

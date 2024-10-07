@@ -340,7 +340,7 @@ public class Controller {
      * Shows that the given word does not belong to the grammar.
      */
     private void invalidWord(){
-        tileLabel.setText("La palabra '" + word + "' no pertenece a la gramatica ingresada");
+        tileLabel.setText("La palabra '" + word + "' no pertenece a la gramatica ingresada, o pertenece mas alla del nivel 5");
     }
 
     /**
