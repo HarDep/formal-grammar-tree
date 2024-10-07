@@ -243,7 +243,8 @@ public class GrammarManager implements Manager {
         List<Node> possibles = new ArrayList<>();
         for (Node node : products) {
             if(checkExact(node.getSymbols(), word)) nodeParticular = node;
-            else if (checkPossible(node.getSymbols(), word)) possibles.add(node);
+            else possibles.add(node);
+            //else if (checkPossible(node.getSymbols(), word)) possibles.add(node);
         }
         if (nodeParticular == null) {
             if (possibles.isEmpty()) {

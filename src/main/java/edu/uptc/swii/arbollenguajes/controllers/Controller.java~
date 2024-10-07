@@ -176,7 +176,11 @@ public class Controller {
                 v.getGraphicsContext2D().fillRect(0, 0, v.getWidth(), v.getHeight());
             });
             particularTreeText.getChildren().clear();
-            generalTreePanel.getChildren().clear();
+            levels.forEach((e, v) -> v.getChildren().clear());
+            canvas.forEach((e, v) -> {
+                v.getGraphicsContext2D().setFill(Color.WHITE);
+                v.getGraphicsContext2D().fillRect(0, 0, v.getWidth(), v.getHeight());
+            });
             manager.generateGeneralTree();
             manager.generateParticularTree(word);
         });
